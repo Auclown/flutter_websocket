@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-import 'package:websocket/services/websocket/binance.dart';
-import 'package:websocket/services/websocket/upbit.dart';
+import '/services/websocket/binance.dart';
+import '/services/websocket/upbit.dart';
 
 class PriceTag extends StatefulWidget {
   final String provider;
@@ -75,6 +75,7 @@ class _PriceTagState extends State<PriceTag> {
               .toString();
         });
       },
+      onError: (error) => print(error),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:websocket/screens/home/widgets/price_tag.dart';
+
+import '/screens/home/widgets/price_tag.dart';
 
 class PriceTagsList extends StatelessWidget {
   const PriceTagsList({Key? key}) : super(key: key);

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:websocket/screens/home/widgets/price_tags_list.dart';
 
-import '/screens/home/widgets/price_tag.dart';
+import '/screens/home/widgets/price_tags_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
