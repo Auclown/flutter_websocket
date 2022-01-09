@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:websocket/screens/home/widgets/price_tags_list.dart';
 
 import '/screens/home/widgets/price_tag.dart';
 
@@ -7,14 +8,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
+    return const CupertinoPageScaffold(
       child: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PriceTag(),
-          ],
-        ),
+        child: PriceTagsList(),
       ),
     );
   }

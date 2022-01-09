@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import 'package:websocket/services/websocket/binance.dart';
+import 'package:websocket/services/websocket/upbit.dart';
+
 class PriceTag extends StatefulWidget {
-  const PriceTag({Key? key}) : super(key: key);
+  final String provider;
+  const PriceTag({
+    Key? key,
+    required this.provider,
+  }) : super(key: key);
 
   @override
   _PriceTagState createState() => _PriceTagState();
@@ -17,28 +24,7 @@ class _PriceTagState extends State<PriceTag> {
   @override
   void initState() {
     super.initState();
-    ws = WebSocketChannel.connect(
-      Uri.parse('wss://stream.binance.com:9443/ws'),
-    );
-
-    ws.sink.add(
-      jsonEncode(
-        {
-          "method": "SUBSCRIBE",
-          "params": ["btcusdt@aggTrade"],
-          "id": 1
-        },
-      ),
-    );
-
-    ws.stream.listen(
-      (data) {
-        setState(() {
-          price = jsonDecode(data)['p'];
-        });
-      },
-      onError: (error) => print(error),
-    );
+    widget.provider == "Binance" ? binance() : upBit();
   }
 
   @override
@@ -54,11 +40,41 @@ class _PriceTagState extends State<PriceTag> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Current BTC Price'),
+            Text(widget.provider == "Binance" ? "BTC-USDT" : "BTC-KRW"),
             Text(price),
           ],
         ),
       ),
+    );
+  }
+
+  void binance() {
+    ws = Binance.connectBinance(method: "SUBSCRIBE", code: "btcusdt");
+    ws.stream.listen(
+      (data) {
+        setState(() {
+          price = jsonDecode(data)['p'];
+        });
+      },
+      onError: (error) => print(error),
+    );
+  }
+
+  void upBit() {
+    ws = UpBit.connectUpBit(
+      ticket: "UNIQUE_TICKET",
+      type: "trade",
+      codes: ["KRW-BTC"],
+    );
+    ws.stream.listen(
+      (data) {
+        setState(() {
+          price = jsonDecode(
+            utf8.decode(data),
+          )['trade_price']
+              .toString();
+        });
+      },
     );
   }
 }
